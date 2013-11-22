@@ -1,0 +1,8 @@
+<h3>What's your name?</h3>
+<form action="/new_player" method="post">
+   <!-- the action can be named anything, but to make our life easier, we will just name it as a convention with the path "/new_player". And for the method, we need to specify the request to "POST", otherwise it will submit this form as a GET to the path "/new_player", and render this page again, it's meaningless. So once we specify the method "POST", it will submit to the POST of the path "/new_player" -->
+  <input type="text" name="player_name"/>
+  <!-- the name still can be anything but we name it with convention. Once we submit this value in the text field, we need this name for us to grab this value by params key. -->
+  <br/>
+  <input type="submit" class="btn"/>
+</form>

@@ -1,0 +1,68 @@
+<div id="game">
+    <% if @winner %>
+    <div class="alert alert-success"><%=@winner%></div>
+  <% elsif @loser %>
+    <div class="alert alert-error"><%=@loser%></div>
+  <% end %>
+
+  <h1>Blackjack!</h1>
+
+  <p>Welcome <%= session[:player_name] %>.</p>
+
+  <% if @play_again %>
+    <p>
+      <strong>Play again?</strong>
+      <a href="/bet" class="btn btn-primary">Yes</a>
+      <a href="/game_over" class="btn"> No</a>
+    </p>
+  <% end %>
+
+  <div class="well">
+    <h4>Dealer's cards:</h4>
+    <!-- It is interesting here that we can choose which line of a block to be appearred in HTML-->
+    <% session[:dealer_cards].each_with_index do |card, i| %>
+      <% if session[:turn] != "dealer" && i == 0 %>
+        <img src="/images/cards/cover.jpg">
+      <% else %>
+        <%= card_image(card) %>
+      <% end %>
+    <% end %>
+
+    <% if @show_dealer_hit_button %>
+      <p>
+        <h5>Dealer has <%= calculate_total(session[:dealer_cards]) %> and will hit.</h5>
+      <form id="dealer_hit" action='/game/dealer/hit' method='post'>
+        <input type='submit' class='btn btn-primary' value='Click to see dealer card &rarr;'>
+      </form>
+      </p>
+    <% end %>
+  </div>
+  <br/>
+
+  <div class="well">
+    <h4>Player's cards:</h4>
+    <% session[:player_cards].each do |card| %>
+      <%= card_image(card) %>
+    <% end %>
+
+    <h5>
+      <%= session[:player_name] %> has $<%= session[:player_pot] %> and bet $<%= session[:player_bet]%> this round.
+    </h5>
+
+  </div>
+  <p>
+    What would <%= session[:player_name] %> like to do?
+  <%= session[:player_name] %> has <%= calculate_total(session[:player_cards]) %>
+
+  <!-- the buttons are actions to submit data, not a retrieval but a submittion as a POST request, so we need form-->
+  <% if @show_hit_or_stay_buttons %> <!-- this is the switch whether the buttons appear or not.-->
+    <!-- again, the action is the URL that the form will submit to. Also, we specify a post request or we will have a GET request.-->
+    <form id="hit_form" action="/game/player/hit" method='post'>
+      <input type="submit" class="btn btn-success" value="Hit" />
+    </form>
+    <form id="stay_form" action="/game/player/stay" method='post'>
+      <input type="submit" class="btn btn-warning" value="Stay" />
+    </form>
+  <% end %>
+  </p>
+</div>
